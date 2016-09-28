@@ -8,7 +8,7 @@ define fail2ban::jail (
   $protocol   = undef,
   $maxretry   = undef,
   $findtime   = undef,
-  Variant[String, Hash, Undef] $action     = undef,
+  Variant[String, Array[String], Undef] $action     = undef,
   $banaction  = undef,
   $bantime    = undef,
   $ignoreip   = undef,
@@ -17,6 +17,8 @@ define fail2ban::jail (
   $use_jail_d = $::fail2ban::use_jail_d,
 ) {
   include fail2ban::config
+
+warning($order)
 
   if $use_jail_d {
       file {"/etc/fail2ban/jail.d/${name}.conf":

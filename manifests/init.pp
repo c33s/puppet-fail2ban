@@ -17,19 +17,36 @@ class fail2ban (
   $purge_jail_dot_d   = true,
   $use_jail_d         = false,
   $default_jail_order = false,
-  $defailt_jails      = {},
+  $jails              = {},
+  $filters            = {},
+  $actions            = {},
 ) {
   anchor { 'fail2ban::begin': } ->
   class { 'fail2ban::install': } ->
-  # class { 'fail2ban::default_jails': } ->
   class { 'fail2ban::config': } ~>
   class { 'fail2ban::service': } ->
   anchor { 'fail2ban::end': }
 
-  $defailt_jails.each |String $name, Hash $parameters | {
-    # notice("${name} = ${parameters}")
-    class { "::fail2ban::jail::${name}":
+  $filters.each |String $name, Hash $parameters | {
+    fail2ban::filter { $name:
       * => $parameters
     }
   }
+  $actions.each |String $name, Hash $parameters | {
+    fail2ban::action { $name:
+      * => $parameters
+    }
+  }
+  $jails.each |String $name, Hash $parameters | {
+    fail2ban::jail { $name:
+      * => $parameters
+    }
+  }
+
+  # $default_jails.each |String $name, Hash $parameters | {
+  #   # notice("${name} = ${parameters}")
+  #   class { "::fail2ban::jail::${name}":
+  #     * => $parameters
+  #   }
+  # }
 }

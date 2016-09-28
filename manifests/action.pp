@@ -1,10 +1,12 @@
 define fail2ban::action (
-  $failregexes,
+  Array $actionstart = [],
+  Array $actionstop = [],
+  Array $actioncheck = [],
+  Array $actionban,
+  Array $actionunban,
+  String $chain_name = 'default',
+  String $mail = 'root',
   $ensure    = present,
-  $ignoreregexes = [],
-  $includes = [],
-  $includes_after = [],
-  $additional_defs = []
 ) {
   include fail2ban::config
 
@@ -13,9 +15,9 @@ define fail2ban::action (
   validate_array($includes_after)
   validate_array($additional_defs)
 
-  file { "/etc/fail2ban/filter.d/${name}.conf":
+  file { "/etc/fail2ban/action.d/${name}.conf":
     ensure  => $ensure,
-    content => template('fail2ban/filter.erb'),
+    content => template('fail2ban/action.erb'),
     owner   => 'root',
     group   => 0,
     mode    => '0644',
@@ -24,3 +26,4 @@ define fail2ban::action (
   }
 
 }
+
