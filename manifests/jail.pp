@@ -18,8 +18,6 @@ define fail2ban::jail (
 ) {
   include fail2ban::config
 
-warning($order)
-
   if $use_jail_d {
       file {"/etc/fail2ban/jail.d/${name}.conf":
         ensure => $ensure,
