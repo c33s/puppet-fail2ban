@@ -15,6 +15,7 @@ class fail2ban (
   $protocol           = 'tcp',
   $action             = '%(action_)s',
   $purge_jail_dot_d   = true,
+  $purge_jail_local   = false,
   $use_jail_d         = false,
   $default_jail_order = false,
   $jails              = {},
